@@ -15,7 +15,7 @@ def read_file(file_name):
     """
     # Tips: kanksje "open"-funksjonen kunne være nyttig her: https://docs.python.org/3/library/functions.html#open
 
-    with open(file_name, "r") as f:
+    with open(file_name, "r", encoding="utf-8") as f:
         lines = f.read().splitlines()
     return lines
 
@@ -102,7 +102,11 @@ def find_most_frequent(frequency_table):
     # Tips: se på "dict.items()" funksjonen (https://docs.python.org/3/library/stdtypes.html#dict.items)
     # og kanskje du kan gjenbruke den "largest_pair" metoden som du nettopp har laget
     
+    most_frequent = ("", -1)
+    for pair in frequency_table.items(): 
+        most_frequent = largest_pair(most_frequent, pair)
 
+    return most_frequent[0]
 
 
 ############################################################
