@@ -15,9 +15,9 @@ def read_file(file_name):
     """
     # Tips: kanksje "open"-funksjonen kunne være nyttig her: https://docs.python.org/3/library/functions.html#open
 
-    with open(file_name, "r", encoding="utf-8") as f:
-        lines = f.read().splitlines()
-    return lines
+    with open(file_name, "r", encoding="utf-8") as f:     # åpner fil, leser (r), håndterer spesielle tegn
+        lines = f.read().splitlines()                     # f.read = leser hele innholdet i filen som en lang tekststreng, .splitlines() = deler opp den lange strengen ved hvert linjeskift 
+    return lines                                          # sender tilbake en liste 
 
 def lines_to_words(lines):
     """
@@ -35,14 +35,14 @@ def lines_to_words(lines):
     # i tillegg kan "strip()": https://docs.python.org/3/library/stdtypes.html#str.strip
     # og "lower()": https://docs.python.org/3/library/stdtypes.html#str.lower være nyttig
     
-    words = []
-    for line in lines: 
-        for word in line.split(): 
-            word = word.lower().strip(".,:;?!")
-            if word: 
-                words.append(word)
+    words = []                                      # oppretter en tom liste
+    for line in lines:                              # går gjennom hver enkelt linje i teksten "lines"
+        for word in line.split():                   # går gjennom hvert ord i "line" - .split() = deler hver setning i ett og ett ord
+            word = word.lower().strip(".,:;?!")     # for hvert ord: .lower() = små bokstaver, .strip(".,:;?!") = fjerner tegnsettingen fra start og slutt av ord
+            if word:                                # sjekker om ord eksisterer og det ikke bare er en tom streng: ""
+                words.append(word)                  # legger til rene ord i listen "words"
             
-    return words 
+    return words                                    # returnerer listen words
 
 def compute_frequency(words):
     """
@@ -52,15 +52,15 @@ def compute_frequency(words):
 
     F. eks. Inn ["hun", "hen", "han", "hen"], Ut: {"hen": 2, "hun": 1, "han": 1}
     """
-    frequency = {}
+    frequency = {}                      # lager en dick {nøkkel:verdi}
 
-    for word in words: 
-        if word in frequency: 
-            frequency[word] += 1
-        else: 
-            frequency[word] = 1
+    for word in words:                  # for alle ord i listen "words"
+        if word in frequency:           # sjekker om ord allerede finnes i dick frequency
+            frequency[word] += 1        # om ja: legger 1 i denne nøkkelen 
+        else:                           # om nøkkelen ikke finnes allerede
+            frequency[word] = 1         # legger set inn i ordboken med verdi 1
 
-    return frequency  
+    return frequency                    # returnerer ordbok 
 
 
 FILL_WORDS = ['og', 'dei', 'i', 'eg', 'som', 'det', 'han', 'til', 'skal', 'på', 'for', 'då', 'ikkje', 'var', 'vera']
@@ -73,10 +73,10 @@ def remove_filler_words(frequency_table):
     Målet med denne funksjonen er at den skal få en frekvenstabll som input og så fjerne alle fyll-ord
     som finnes i FILL_WORDS.
     """
-    for word in FILL_WORDS: 
-        if word in frequency_table: 
-            del frequency_table[word]
-    return frequency_table
+    for word in FILL_WORDS:                 # for alle ord i teksten "Fill_words"
+        if word in frequency_table:         # om disse ordene finnes i "frequency_table"
+            del frequency_table[word]       # fjern ord fra frequency_table
+    return frequency_table                  # returner frequency_table
 
 
 def largest_pair(par_1, par_2):
@@ -88,10 +88,11 @@ def largest_pair(par_1, par_2):
     """
     # OBS: Tenk også på situasjonen når to tall er lik! Vurder hvordan du vil handtere denne situasjonen
     # kanskje du vil skrive noen flere test metoder ?!
-    if par_1[1] >= par_2[1]: 
-        return par_1
-    else: 
-        return par_2
+
+    if par_1[1] >= par_2[1]:        # om par_1 komponent 1 (altså tallet) er større eller lik par_2 komponent 1 (tall)
+        return par_1                # returneres par_1
+    else:                           # om ikke 
+        return par_2                # returneres par_2
 
 
 def find_most_frequent(frequency_table):
@@ -102,11 +103,12 @@ def find_most_frequent(frequency_table):
     # Tips: se på "dict.items()" funksjonen (https://docs.python.org/3/library/stdtypes.html#dict.items)
     # og kanskje du kan gjenbruke den "largest_pair" metoden som du nettopp har laget
     
-    most_frequent = ("", -1)
-    for pair in frequency_table.items(): 
-        most_frequent = largest_pair(most_frequent, pair)
+    most_frequent = ("", -1)                                # lager en "dummy-variabel" som fungerer som en foreløbig beholder. Starter med tom tekststreng og tallet -1
+    for pair in frequency_table.items():                    # for pair i dict - .items() = gjør om ordbot til en liste med par (tupler)
+        most_frequent = largest_pair(most_frequent, pair)   # bruker kodene fra tidligere:
+                                                                # largest_pair (nåværende beholder, nytt par) -> sjekker om hvem som er størst, og den legges inn i largest_pair
 
-    return most_frequent[0]
+    return most_frequent[0]                                 # returnerer most_frequens som består av paret med høyest tall, siden vi bare skal ha ord ikke tall velger den posisjon [0] som ordet står i 
 
 
 ############################################################
